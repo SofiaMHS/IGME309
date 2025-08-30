@@ -21,19 +21,28 @@ let inputField = document.getElementById("input-field")
 let goButton = document.getElementById("go-button")
 let resultText = document.getElementById("result")
 
-const rnd = Math.floor(Math.random(0,100))
+//gets a random number from 0 to 100, and floors it at the nearest int
+//sets the constant rnd to the random number
+const rnd = Math.floor(Math.random(0) * 101)
 
 goButton.onclick = function() {
     // Handle user's guess.
 
+    //sets a local variable to the user's input
     let v = parseInt(inputField.value);
 
+    //if the user's input matches the random number
+    //a correct message is displayed
     if (v == rnd){
         resultText.innerHTML = 'Correct';
     } 
+    //if the user's input is too low, a message will
+    //notify the user
     else if(v < rnd){
         resultText.innerHTML = 'Low';
     }
+    //if the user's input is too high, a message will
+    //notify the user
     else if(v > rnd){
         resultText.innerHTML = 'High';
     }
