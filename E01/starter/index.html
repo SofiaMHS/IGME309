@@ -21,27 +21,32 @@ let inputField = document.getElementById("input-field")
 let goButton = document.getElementById("go-button")
 let resultText = document.getElementById("result")
 
+//sets the constant rnd to a random number rounded to the
+//nearest integer
 const rnd = Math.floor(Math.random(0,100))
 
 goButton.onclick = function() {
     // Handle user's guess.
 
+    //sets the local variable v to the value of the input field
     let v = parseInt(inputField.value);
 
+    //if v is equal to the generated number, 
+    //text is displayed indicating a correct answer
     if (v == rnd){
         resultText.innerHTML = 'Correct';
     } 
+    //if v is less than the generated number,
+    //text is displayed indicating a low answer
     else if(v < rnd){
         resultText.innerHTML = 'Low';
     }
+    //if v is greater than the generated number,
+    //text is displayed indicating a high answer
     else if(v > rnd){
         resultText.innerHTML = 'High';
     }
-    // Get the input field value with:
-    // let v = parseInt(inputField.value)
-
-    // Response with:
-    // resultText.innerText = "low/high/correct"
+ 
 }
 
 </script>
