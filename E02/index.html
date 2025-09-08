@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <title>Exercise 2</title>
-    <script src="webgl-demo.js" type="module"></script>
     <style>
       canvas{
         background-color: black;
@@ -14,49 +13,75 @@
 
     <canvas id="canvas" width="800" height="800"></canvas>
 
+    <!--Code for vertex shader-->
     <script id="vertex" type="x-shader/x-vertex">
       #version 300 es
+      //^tells the GPU this document is using OpenGL ES shading language ver. 3.0
+      //this is to prevent the browser from defaulting to WebGL1 and ES ver. 2.0
 
+      //the current vertex from the input list that is being processed
       in vec4 vertexPosition;
 
+      //main called three times in parallel with vertexPosition for
+      //each call has 3 coordinates
       void main() {
+        //to output a vertex, main() assigns the output to the predefined gl_Position variable
         gl_Position = vertexPosition;
       }
     </script>
 
     <script id="fragment" type="x-shader/x-fragment">
       #version 300 es
+      //^tells the GPU this document is using OpenGL ES shading lang. ver. 3.0
+
+      //specifing the floating point precision, using the max. precision
       precision highp float;
 
+      //declaring output color of each pixel, a 4D vector representing
+      //RGBA
       out vec4 fragColor;
 
+      //setting the color of the pixel
       void main() {
         fragColor = vec4(1, 0, 0, 1);
       }
     </script>
 
     <script>
+      
+      //get canvas and shader code from document by ID
       const canvas = document.getElementById("canvas");
       const vertexCode = document.getElementById("vertex").textContent;
       const fragmentCode = document.getElementById("fragment").textContent;
 
+      //get webgl2 context from canvas, throws error if not supported
       const gl = canvas.getContext("webgl2");
       if (!gl) throw "WebGL2 not supported";
 
+      //using gl constant, create a vertex shader object
       const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+      //set the source code to be derived from the vertex shader/code
       gl.shaderSource(vertexShader, vertexCode.trim());
+      //compile the shader code
       gl.compileShader(vertexShader);
+      //throw any errors that appear during compilation
       if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
         throw gl.getShaderInfoLog(vertexShader);
       }
 
+      //using gl constant, create a fragment shader object
       const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+      //set the source code to be derived from the fragment shader/code
       gl.shaderSource(fragmentShader, fragmentCode.trim());
+      //compile the shader code
       gl.compileShader(fragmentShader);
+      //throw any errors that appear during compilation
       if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
         throw gl.getShaderInfoLog(fragmentShader);
       }
 
+      //create a full WebGL program by linking the
+      //fragment and vertex shaders together
       const program = gl.createProgram();
       gl.attachShader(program, vertexShader);
       gl.attachShader(program, fragmentShader);
@@ -66,19 +91,31 @@
       }
       gl.useProgram(program);
 
+      //create an array of the triangles 3 vertices
       const vertices = [
         [-0.5, 0.5, 0],
         [0, -0.5, 0],
         [0.5, 0.5, 0],
       ];
+
+      //convert array of vertices to a typed array, so that the
+      //array will work with the shader code
       const vertexData = new Float32Array(vertices.flat());
+
+      //create a new GPU buffer using WebGL's global variable ARRAY_BUFFER
       gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+      //fill the newly created buffer with typed verticies array
       gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.STATIC_DRAW);
 
+      //create a name for the vertex buffer, to be used in the shader code
       const vertexPosition = gl.getAttribLocation(program, "vertexPosition");
+      
+      //vertexPosition input is attached to the vertex buffer
       gl.enableVertexAttribArray(vertexPosition);
       gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
 
+      //call WebGL's draw function, using gl.TRIANGLES to tell WebGL we are using the
+      //three verticies to draw a triangle
       gl.drawArrays(gl.TRIANGLES, 0, vertices.length);
     </script>
   </body>
