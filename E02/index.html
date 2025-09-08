@@ -4,8 +4,14 @@
     <meta charset="utf-8" />
     <title>Exercise 2</title>
     <script src="webgl-demo.js" type="module"></script>
+    <style>
+      canvas{
+        background-color: black;
+      }
+    </style>
     </head>
   <body>
+
     <canvas id="canvas" width="800" height="800"></canvas>
 
     <script id="vertex" type="x-shader/x-vertex">
@@ -61,9 +67,9 @@
       gl.useProgram(program);
 
       const vertices = [
-        [-0.5, 1, 0],
-        [0, 0, 0],
-        [0.5, 1, 0],
+        [-0.5, 0.5, 0],
+        [0, -0.5, 0],
+        [0.5, 0.5, 0],
       ];
       const vertexData = new Float32Array(vertices.flat());
       gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
