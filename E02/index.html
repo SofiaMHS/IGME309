@@ -30,6 +30,7 @@
       }
     </script>
 
+    <!--Code for fragment shader-->
     <script id="fragment" type="x-shader/x-fragment">
       #version 300 es
       //^tells the GPU this document is using OpenGL ES shading lang. ver. 3.0
@@ -47,8 +48,8 @@
       }
     </script>
 
+    <!--Code for WebGL setup in JavaScript-->
     <script>
-      
       //get canvas and shader code from document by ID
       const canvas = document.getElementById("canvas");
       const vertexCode = document.getElementById("vertex").textContent;
